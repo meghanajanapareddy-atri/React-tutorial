@@ -9,7 +9,12 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-export const Table = ({ data: tableData, columns: tableColumns, title }) => {
+export const Table = ({
+  data: tableData,
+  columns: tableColumns,
+  title,
+  onDelete,
+}) => {
   const [data, setTableData] = useState(tableData);
   const columns = useMemo(() => tableColumns, [tableColumns]);
 
@@ -20,6 +25,7 @@ export const Table = ({ data: tableData, columns: tableColumns, title }) => {
       return row.id !== tbd.id;
     });
     setTableData(delData);
+    onDelete(row);
   };
 
   const table = useReactTable({

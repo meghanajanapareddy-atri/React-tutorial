@@ -70,13 +70,22 @@ const App = () => {
     setList(newList);
   }
 
+  function handleDelete(row) {
+    const delData = list.filter((tbd) => {
+      return row.id !== tbd.id;
+    });
+    setList(delData);
+  }
+
   return (
     <div className="container">
       <main>
         <Routes>
           <Route
             path="/"
-            element={<Home columns={columns} list={list} />}
+            element={
+              <Home columns={columns} list={list} onDelete={handleDelete} />
+            }
             exact
           />
           <Route path="/placedetails" element={<PlaceDetails />} exact />
