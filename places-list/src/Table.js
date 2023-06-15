@@ -1,5 +1,6 @@
 import React from "react";
 import { useTable } from "react-table";
+import { MDBTable, MDBTableHead, MDBTableBody } from "mdb-react-ui-kit";
 
 export default function Table({ columns, data }) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -8,8 +9,8 @@ export default function Table({ columns, data }) {
       data,
     });
   return (
-    <table {...getTableProps()}>
-      <thead>
+    <MDBTable {...getTableProps()} hover bordered>
+      <MDBTableHead dark>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
@@ -17,8 +18,8 @@ export default function Table({ columns, data }) {
             ))}
           </tr>
         ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
+      </MDBTableHead>
+      <MDBTableBody {...getTableBodyProps()}>
         {rows.map((row, i) => {
           prepareRow(row);
           return (
@@ -29,7 +30,7 @@ export default function Table({ columns, data }) {
             </tr>
           );
         })}
-      </tbody>
-    </table>
+      </MDBTableBody>
+    </MDBTable>
   );
 }

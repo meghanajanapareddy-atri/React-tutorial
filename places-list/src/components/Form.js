@@ -1,45 +1,97 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import "./Form.css";
+import { useState } from "react";
 
 function Form({ onAdd }) {
   const { register, handleSubmit, reset } = useForm();
+
   const onSubmit = (data) => {
-    onAdd(data.place);
+    onAdd(data.place, data.description, data.visited, data.rating);
     reset();
   };
 
+  const options = [
+    { id: 1, name: "1" },
+    { id: 2, name: "2" },
+    { id: 3, name: "3" },
+    { id: 4, name: "4" },
+    { id: 5, name: "5" },
+  ];
+
+  function uncheckAll(options) {
+    return options.map((option) => ({
+      ...option,
+      checked: false,
+    }));
+  }
+
+  function toggleOption(options, id, checked) {
+    return options.map((option) =>
+      option.id === id ? { ...option, checked } : option
+    );
+  }
+
+  const [checkedList, setCheckedList] = useState(uncheckAll(options));
+
+  const changeList = (id, checked) => {
+    setCheckedList((checkedList) => toggleOption(checkedList, id, checked));
+  };
+
   return (
-    <div class="container">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input {...register("place")} />
-        <input type="submit" />
-        <div className="form-check mt-3">
-          <label htmlFor="Yes">
+    <div className="mainform">
+      <div className="form-box">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input {...register("place")} placeholder="Enter city name here..." />
+
+          <textarea
+            {...register("description")}
+            placeholder="Enter places visited..."
+          ></textarea>
+
+          <label htmlFor="visited">Will visit again?</label>
+
+          <label htmlFor="Yes" className="radio-label">
             <input
               {...register("visited", { required: true })}
               type="radio"
               name="visited"
               value="Yes"
-              className="form-check-input"
               id="yes"
-            />{" "}
+            />
             YES
           </label>
-        </div>
-        <div className="form-check">
-          <label htmlFor="burger">
+
+          <label htmlFor="No" className="radio-label">
             <input
               {...register("visited", { required: true })}
               type="radio"
               name="visited"
               value="No"
-              className="form-check-input"
               id="no"
-            />{" "}
+            />
             NO
           </label>
-        </div>
-      </form>
+
+          <br></br>
+          <label htmlFor="rating">Rating </label>
+          {checkedList.map(({ id, name, checked }) => (
+            <label key={id}>
+              {name}
+              <input
+                {...register("rating")}
+                type="checkbox"
+                checked={checked}
+                onChange={(e) => changeList(id, e.target.checked)}
+              />
+            </label>
+          ))}
+
+          <br></br>
+
+          <input type="submit" />
+        </form>
+      </div>
     </div>
   );
 }

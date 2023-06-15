@@ -1,14 +1,26 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   useReactTable,
   getCoreRowModel,
   flexRender,
 } from "@tanstack/react-table";
 import { MDBTable, MDBTableHead, MDBTableBody } from "mdb-react-ui-kit";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export const Table = ({ data: tableData, columns: tableColumns, title }) => {
-  const data = useMemo(() => tableData, [tableData]);
+  const [data, setTableData] = useState(tableData);
   const columns = useMemo(() => tableColumns, [tableColumns]);
+
+  // const localStorageKeys = Object.keys(localStorage);
+
+  const handleDelete = (row) => {
+    const delData = data.filter((tbd) => {
+      return row.id !== tbd.id;
+    });
+    setTableData(delData);
+  };
 
   const table = useReactTable({
     data,
@@ -19,8 +31,8 @@ export const Table = ({ data: tableData, columns: tableColumns, title }) => {
   return (
     <div>
       <div>{title && <h3>{title}</h3>}</div>{" "}
-      <MDBTable striped hover>
-        <MDBTableHead>
+      <MDBTable hover>
+        <MDBTableHead className="tableheader">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -29,10 +41,12 @@ export const Table = ({ data: tableData, columns: tableColumns, title }) => {
                     {header.isPlaceholder ? null : (
                       <div>
                         <span>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          <b>
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                          </b>
                         </span>
                       </div>
                     )}
@@ -45,17 +59,38 @@ export const Table = ({ data: tableData, columns: tableColumns, title }) => {
         <MDBTableBody>
           {table.getRowModel().rows.map((row) => {
             return (
-              <tr key={row.id}>
+              <tr key={row.id} onClick={() => console.log(row.original)}>
                 {row.getVisibleCells().map((cell) => {
                   return (
                     <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      <Link to="/placedetails" state={{ data: row.original }}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Link>
                     </td>
                   );
                 })}
+
+                <td>
+                  <button className="tablebtn">
+                    <FontAwesomeIcon
+                      icon={faPenToSquare}
+                      style={{ color: "#c1aa93" }}
+                    />
+                  </button>
+
+                  <button
+                    className="tablebtn"
+                    onClick={() => handleDelete(row.original)}
+                  >
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      style={{ color: "#c1aa93" }}
+                    />
+                  </button>
+                </td>
               </tr>
             );
           })}

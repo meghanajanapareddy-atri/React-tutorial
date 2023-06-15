@@ -1,10 +1,13 @@
 import React from "react";
-import Navbar from "./Navbar";
-function Home() {
+import { Table } from "./Table";
+import PageTop from "./PageTop";
+
+function Home({ columns, list }) {
   return (
-    <div>
-      <h1>Travel List</h1>
-      <Navbar />
+    <div className="homepage">
+      <PageTop />
+      <br></br>
+      <Table data={list} columns={columns} title="" />
     </div>
   );
 }
