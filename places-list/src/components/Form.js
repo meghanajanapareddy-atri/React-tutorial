@@ -49,9 +49,9 @@ function Form({ onAdd }) {
             placeholder="Enter places visited..."
           ></textarea>
 
-          <label htmlFor="visited">Will visit again?</label>
+          <label htmlFor="yes">Will visit again?</label>
 
-          <label htmlFor="Yes" className="radio-label">
+          <label htmlFor="yes" className="radio-label">
             <input
               {...register("visited", { required: true })}
               type="radio"
@@ -62,7 +62,7 @@ function Form({ onAdd }) {
             YES
           </label>
 
-          <label htmlFor="No" className="radio-label">
+          <label htmlFor="no" className="radio-label">
             <input
               {...register("visited", { required: true })}
               type="radio"
@@ -74,7 +74,7 @@ function Form({ onAdd }) {
           </label>
 
           <br></br>
-          <label htmlFor="rating">Rating </label>
+          <label>Rating </label>
           {checkedList.map(({ id, name, checked }) => (
             <label key={id}>
               {name}

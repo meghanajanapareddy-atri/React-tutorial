@@ -55,9 +55,7 @@ const columns = [
 const App = () => {
   const [list, setList] = useState(places_list);
 
-  useEffect(() => {
-    localStorage.setItem("places_list", JSON.stringify(places_list));
-  });
+  useEffect(() => {}, [list]);
 
   function handleAdd(place, description, visited, rating) {
     const newList = list.concat({
@@ -77,6 +75,21 @@ const App = () => {
     setList(delData);
   }
 
+  const handleEdit = (id, row) => {
+    const editedList = list.map((item) => {
+      if (id === item.id) {
+        return {
+          ...item,
+          place: row.place,
+          description: row.description,
+          visited: row.visited,
+        };
+      }
+      return item;
+    });
+    setList(editedList);
+  };
+
   return (
     <div className="container">
       <main>
@@ -84,7 +97,12 @@ const App = () => {
           <Route
             path="/"
             element={
-              <Home columns={columns} list={list} onDelete={handleDelete} />
+              <Home
+                columns={columns}
+                list={list}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+              />
             }
             exact
           />

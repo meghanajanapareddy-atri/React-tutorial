@@ -8,24 +8,26 @@ import { MDBTable, MDBTableHead, MDBTableBody } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
+import PopUpTable from "./PopUpTable";
 
 export const Table = ({
   data: tableData,
   columns: tableColumns,
   title,
   onDelete,
+  onEdit,
 }) => {
-  const [data, setTableData] = useState(tableData);
+  const data = useMemo(() => tableData, [tableData]);
   const columns = useMemo(() => tableColumns, [tableColumns]);
-
-  // const localStorageKeys = Object.keys(localStorage);
+  const [open, setOpen] = useState(false);
+  const [editRow, setEditRow] = useState({});
 
   const handleDelete = (row) => {
-    const delData = data.filter((tbd) => {
-      return row.id !== tbd.id;
-    });
-    setTableData(delData);
     onDelete(row);
+  };
+
+  const displayPopup = (row) => {
+    setEditRow(row);
   };
 
   const table = useReactTable({
@@ -65,7 +67,7 @@ export const Table = ({
         <MDBTableBody>
           {table.getRowModel().rows.map((row) => {
             return (
-              <tr key={row.id} onClick={() => console.log(row.original)}>
+              <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => {
                   return (
                     <td key={cell.id}>
@@ -80,12 +82,25 @@ export const Table = ({
                 })}
 
                 <td>
-                  <button className="tablebtn">
+                  <button
+                    className="tablebtn"
+                    onClick={() => {
+                      setOpen(true);
+                      displayPopup(row.original);
+                    }}
+                  >
                     <FontAwesomeIcon
                       icon={faPenToSquare}
                       style={{ color: "#c1aa93" }}
                     />
                   </button>
+                  {open ? (
+                    <PopUpTable
+                      rowdata={editRow}
+                      onEdit={onEdit}
+                      closePopup={() => setOpen(false)}
+                    />
+                  ) : null}
 
                   <button
                     className="tablebtn"
