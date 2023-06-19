@@ -16,9 +16,19 @@ function PopUpTable({ rowdata, onEdit, closePopup }) {
   };
 
   const [selected, setSelected] = useState(rowdata.visited);
+  const [placeState, setPlace] = useState(rowdata.place);
+  const [descState, setDescription] = useState(rowdata.description);
 
   const handleChange = (event) => {
     setSelected(event.target.value);
+  };
+
+  const handlePlaceChange = (event) => {
+    setPlace(event.target.value);
+  };
+
+  const handleDescChange = (event) => {
+    setDescription(event.target.value);
   };
 
   const [checkedList, setCheckedList] = useState(uncheckAll(options));
@@ -44,8 +54,9 @@ function PopUpTable({ rowdata, onEdit, closePopup }) {
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             {...register("place")}
-            value={rowdata.place}
-            onChange={handleChange}
+            type="text"
+            value={placeState}
+            onChange={handlePlaceChange}
           />
 
           <br></br>
@@ -55,8 +66,8 @@ function PopUpTable({ rowdata, onEdit, closePopup }) {
           <textarea
             {...register("description")}
             placeholder="Enter places visited..."
-            onChange={handleChange}
-            value={rowdata.description}
+            onChange={handleDescChange}
+            value={descState}
           ></textarea>
 
           <br></br>
