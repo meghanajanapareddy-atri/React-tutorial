@@ -67,3 +67,11 @@ td:last-child {
   font-size: 16px;
 }
 
+input[type="submit"],
+textarea {
+
+  background-color:#aa8676;
+  border: none;
+  color: #ffffff;
+
+}
