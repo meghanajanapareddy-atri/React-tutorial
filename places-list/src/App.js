@@ -75,7 +75,7 @@ const App = () => {
     setList(delData);
   }
 
-  const handleEdit = (id, row) => {
+  const handleEdit = (id, row, rating) => {
     const editedList = list.map((item) => {
       if (id === item.id) {
         return {
@@ -83,6 +83,7 @@ const App = () => {
           place: row.place,
           description: row.description,
           visited: row.visited,
+          rating: rating,
         };
       }
       return item;

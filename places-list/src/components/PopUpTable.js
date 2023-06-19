@@ -3,49 +3,40 @@ import "./Popup.css";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { MDBBtn } from "mdb-react-ui-kit";
+import { options, uncheckAll, toggleOption } from "./Checklist";
 
 function PopUpTable({ rowdata, onEdit, closePopup }) {
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = (data) => {
-    onEdit(rowdata.id, data);
+    const value = handleCheck();
+    onEdit(rowdata.id, data, value);
     closePopup();
     reset();
   };
 
-  //   const options = [
-  //     { id: 1, name: "1" },
-  //     { id: 2, name: "2" },
-  //     { id: 3, name: "3" },
-  //     { id: 4, name: "4" },
-  //     { id: 5, name: "5" },
-  //   ];
-
-  //   function uncheckAll(options) {
-  //     return options.map((option) => ({
-  //       ...option,
-  //       checked: false,
-  //     }));
-  //   }
-
-  //   function toggleOption(options, id, checked) {
-  //     return options.map((option) =>
-  //       option.id === id ? { ...option, checked } : option
-  //     );
-  //   }
-
-  //   const [checkedList, setCheckedList] = useState(uncheckAll(options));
-
-  //   const changeList = (id, checked) => {
-  //     setCheckedList((checkedList) => toggleOption(checkedList, id, checked));
-  //   };
-
   const [selected, setSelected] = useState(rowdata.visited);
-  //   const [checked, setChecked] = React.useState(true);
 
   const handleChange = (event) => {
     setSelected(event.target.value);
   };
+
+  const [checkedList, setCheckedList] = useState(uncheckAll(options));
+
+  const changeList = (id, checked) => {
+    setCheckedList((checkedList) => toggleOption(checkedList, id, checked));
+  };
+
+  function handleCheck() {
+    var rating = 0;
+    checkedList.map((item) => {
+      if (item.checked) {
+        rating = item.id;
+      }
+      return item;
+    });
+    return rating;
+  }
 
   return (
     <div className="popup-container">
@@ -104,22 +95,20 @@ function PopUpTable({ rowdata, onEdit, closePopup }) {
 
           <br></br>
 
-          {/* <label htmlFor="rating">Rating </label>
+          <label htmlFor="rating">Rating </label>
           {checkedList.map(({ id, name, checked }) => (
             <label key={id}>
               {name}
               <input
-                {...register("rating")}
                 type="checkbox"
-                defaultChecked={checked}
                 checked={checked}
-                id="rating"
+                id={`checkbox-${id}`}
                 onChange={(e) => changeList(id, e.target.checked)}
               />
             </label>
           ))}
 
-          <br></br> */}
+          <br></br>
 
           <MDBBtn rounded className="navbtn">
             <input type="submit" />{" "}

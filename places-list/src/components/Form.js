@@ -2,41 +2,33 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import "./Form.css";
 import { useState } from "react";
+import { options, uncheckAll, toggleOption } from "./Checklist";
 
 function Form({ onAdd }) {
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = (data) => {
-    onAdd(data.place, data.description, data.visited, data.rating);
+    const value = handleCheck();
+    onAdd(data.place, data.description, data.visited, value);
     reset();
   };
-
-  const options = [
-    { id: 1, name: "1" },
-    { id: 2, name: "2" },
-    { id: 3, name: "3" },
-    { id: 4, name: "4" },
-    { id: 5, name: "5" },
-  ];
-
-  function uncheckAll(options) {
-    return options.map((option) => ({
-      ...option,
-      checked: false,
-    }));
-  }
-
-  function toggleOption(options, id, checked) {
-    return options.map((option) =>
-      option.id === id ? { ...option, checked } : option
-    );
-  }
 
   const [checkedList, setCheckedList] = useState(uncheckAll(options));
 
   const changeList = (id, checked) => {
     setCheckedList((checkedList) => toggleOption(checkedList, id, checked));
   };
+
+  function handleCheck() {
+    var rating = 0;
+    checkedList.map((item) => {
+      if (item.checked) {
+        rating = item.id;
+      }
+      return item;
+    });
+    return rating;
+  }
 
   return (
     <div className="mainform">
@@ -79,9 +71,9 @@ function Form({ onAdd }) {
             <label key={id}>
               {name}
               <input
-                {...register("rating")}
                 type="checkbox"
                 checked={checked}
+                id={`checkbox-${id}`}
                 onChange={(e) => changeList(id, e.target.checked)}
               />
             </label>
