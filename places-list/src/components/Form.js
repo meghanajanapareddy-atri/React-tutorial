@@ -34,11 +34,16 @@ function Form({ onAdd }) {
     <div className="mainform">
       <div className="form-box">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <input {...register("place")} placeholder="Enter city name here..." />
+          <input
+            {...register("place")}
+            placeholder="Enter city name here..."
+            name="place"
+          />
 
           <textarea
             {...register("description")}
             placeholder="Enter places visited..."
+            name="description"
           ></textarea>
 
           <label htmlFor="yes">Will visit again?</label>
@@ -74,6 +79,7 @@ function Form({ onAdd }) {
                 type="checkbox"
                 checked={checked}
                 id={`checkbox-${id}`}
+                name={id}
                 onChange={(e) => changeList(id, e.target.checked)}
               />
             </label>
