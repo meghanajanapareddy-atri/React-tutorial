@@ -84,6 +84,7 @@ export const Table = ({
                 <td>
                   <button
                     className="tablebtn"
+                    id="edit"
                     onClick={() => {
                       setOpen(true);
                       displayPopup(row.original);
@@ -94,16 +95,10 @@ export const Table = ({
                       style={{ color: "#c1aa93" }}
                     />
                   </button>
-                  {open ? (
-                    <PopUpTable
-                      rowdata={editRow}
-                      onEdit={onEdit}
-                      closePopup={() => setOpen(false)}
-                    />
-                  ) : null}
 
                   <button
                     className="tablebtn"
+                    id="delete"
                     onClick={() => handleDelete(row.original)}
                   >
                     <FontAwesomeIcon
@@ -117,6 +112,13 @@ export const Table = ({
           })}
         </MDBTableBody>
       </MDBTable>
+      {open ? (
+        <PopUpTable
+          rowdata={editRow}
+          onEdit={onEdit}
+          closePopup={() => setOpen(false)}
+        />
+      ) : null}
     </div>
   );
 };

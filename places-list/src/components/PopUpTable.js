@@ -38,7 +38,7 @@ function PopUpTable({ rowdata, onEdit, closePopup }) {
   };
 
   function handleCheck() {
-    var rating = 0;
+    var rating = rowdata.rating;
     checkedList.map((item) => {
       if (item.checked) {
         rating = item.id;
@@ -51,12 +51,13 @@ function PopUpTable({ rowdata, onEdit, closePopup }) {
   return (
     <div className="popup-container">
       <div className="popup-body">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} id="popup-form">
           <input
             {...register("place")}
             type="text"
             value={placeState}
             onChange={handlePlaceChange}
+            id={`input-${placeState}`}
           />
 
           <br></br>
@@ -68,6 +69,7 @@ function PopUpTable({ rowdata, onEdit, closePopup }) {
             placeholder="Enter places visited..."
             onChange={handleDescChange}
             value={descState}
+            id={`textarea-${placeState}`}
           ></textarea>
 
           <br></br>
@@ -112,17 +114,19 @@ function PopUpTable({ rowdata, onEdit, closePopup }) {
               {name}
               <input
                 type="checkbox"
-                checked={checked}
+                checked={id === parseInt(rowdata.rating, 10) ? true : checked}
                 id={`checkbox-${id}`}
+                name={id}
                 onChange={(e) => changeList(id, e.target.checked)}
               />
+              {console.log(rowdata.rating, id)}
             </label>
           ))}
 
           <br></br>
 
           <MDBBtn rounded className="navbtn">
-            <input type="submit" />{" "}
+            <input type="submit" id="submit" />
           </MDBBtn>
           <MDBBtn rounded className="navbtn" onClick={closePopup}>
             Close X
