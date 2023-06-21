@@ -1,0 +1,25 @@
+{
+  "places_list": [
+    {
+      "id": "1",
+      "place": "San Diego",
+      "description": "La Jolla Cave, Sunset Clifss",
+      "visited": "Yes",
+      "rating": 5
+    },
+    {
+      "id": "2",
+      "place": "Los Angeles",
+      "description": "Hollywood, Universal Studios",
+      "visited": "Yes",
+      "rating": 4
+    },
+    {
+      "place": "Seattle",
+      "id": "efdb7254-9205-46dd-a356-a84332f0cdbe",
+      "description": "Mt.Rainier",
+      "visited": "Yes",
+      "rating": 3
+    }
+  ]
+}
