@@ -6,23 +6,34 @@ import { options, uncheckAll, toggleOption } from "./Checklist";
 
 function Form({ onAdd }) {
   const { register, handleSubmit, reset } = useForm();
+  var rating = 0;
 
   const onSubmit = (data) => {
-    const value = handleCheck();
-    onAdd(data.place, data.description, data.visited, value);
+    handleCheck();
+    onAdd(data.place, data.description, data.visited, rating);
     reset();
   };
 
   const [checkedList, setCheckedList] = useState(uncheckAll(options));
 
   const changeList = (id, checked) => {
+    checkedList.map((item) => {
+      if (item.checked) {
+        if (item.id !== id) {
+          item.checked = false;
+        }
+        rating = item.id;
+      }
+    });
     setCheckedList((checkedList) => toggleOption(checkedList, id, checked));
   };
 
   function handleCheck() {
-    var rating = 0;
     checkedList.map((item) => {
       if (item.checked) {
+        if (item.id === rating) {
+          item.checked = false;
+        }
         rating = item.id;
       }
       return item;

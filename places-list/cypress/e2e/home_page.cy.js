@@ -45,14 +45,22 @@ describe("My Travel List", () => {
       .should("contain", newRecord.rating);
   });
   it("should allow for the edit of records", () => {
+    cy.intercept("http://localhost:3001/places_list", {
+      fixture: "db_copy.json",
+    }).as("fetchTableData");
+
     cy.visit("/");
+
+    cy.wait("@fetchTableData").then((interception) => {
+      console.log(interception.response);
+    });
 
     const Record = {
       id: "2",
       place: "Los Angeles",
-      description: "Hollywood",
+      description: "Hollywood, Universal Studios, Blah blah",
       visited: "Yes",
-      rating: "4",
+      rating: 2,
     };
 
     // 1. Select records to edit
@@ -93,10 +101,14 @@ describe("My Travel List", () => {
   });
 
   it("should allow for the deletion of a record", () => {
+    cy.intercept("DELETE", "http://localhost:3001/places_list", {
+      fixture: "db_copy.json",
+    }).as("fetchTableData");
+
     cy.visit("/");
 
     const Record = {
-      place: "San Diego",
+      place: "Seattle",
     };
 
     cy.get("table tbody").within(() => {
