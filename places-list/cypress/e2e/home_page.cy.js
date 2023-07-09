@@ -1,6 +1,14 @@
 describe("My Travel List", () => {
   it("should show me a list of records", () => {
+    cy.intercept("http://localhost:3001/places_list", {
+      fixture: "db_copy.json",
+    }).as("fetchTableData");
+
     cy.visit("/");
+
+    cy.wait("@fetchTableData").then((interception) => {
+      console.log(interception.response);
+    });
 
     // 1. Verify that number of rows are expected
     cy.get(".table").find("tr").should("have.length", 3);

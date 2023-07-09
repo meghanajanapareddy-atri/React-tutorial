@@ -2,44 +2,27 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import "./Form.css";
 import { useState } from "react";
-import { options, uncheckAll, toggleOption } from "./Checklist";
+import { options } from "./Checklist";
 
 function Form({ onAdd }) {
   const { register, handleSubmit, reset } = useForm();
-  var rating = 0;
+  const [checkedList, setCheckedList] = useState([]);
 
   const onSubmit = (data) => {
-    handleCheck();
-    onAdd(data.place, data.description, data.visited, rating);
+    onAdd(data.place, data.description, data.visited, checkedList);
     reset();
   };
+  const handleSelect = (event) => {
+    const value = event.target.value;
+    const isChecked = event.target.checked;
 
-  const [checkedList, setCheckedList] = useState(uncheckAll(options));
-
-  const changeList = (id, checked) => {
-    checkedList.map((item) => {
-      if (item.checked) {
-        if (item.id !== id) {
-          item.checked = false;
-        }
-        rating = item.id;
-      }
-    });
-    setCheckedList((checkedList) => toggleOption(checkedList, id, checked));
+    if (isChecked) {
+      setCheckedList([...checkedList, value]);
+    } else {
+      const filteredList = checkedList.filter((item) => item !== value);
+      setCheckedList(filteredList);
+    }
   };
-
-  function handleCheck() {
-    checkedList.map((item) => {
-      if (item.checked) {
-        if (item.id === rating) {
-          item.checked = false;
-        }
-        rating = item.id;
-      }
-      return item;
-    });
-    return rating;
-  }
 
   return (
     <div className="mainform">
@@ -83,15 +66,15 @@ function Form({ onAdd }) {
 
           <br></br>
           <label>Rating </label>
-          {checkedList.map(({ id, name, checked }) => (
+          {options.map(({ id, name }) => (
             <label key={id}>
               {name}
               <input
                 type="checkbox"
-                checked={checked}
                 id={`checkbox-${id}`}
                 name={id}
-                onChange={(e) => changeList(id, e.target.checked)}
+                value={name}
+                onChange={handleSelect}
               />
             </label>
           ))}
