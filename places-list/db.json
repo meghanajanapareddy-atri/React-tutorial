@@ -5,35 +5,19 @@
       "place": "Los Angeles",
       "description": "Hollywood, Santa Monica, Universal Studios",
       "visited": "Yes",
-      "rating": 2
-    },
-    {
-      "place": "San Diego",
-      "id": "ffdf0996-6a91-4f38-83bd-b6011d2ff74a",
-      "description": "Mt.Rainier",
-      "visited": "Yes",
-      "rating": 5
-    },
-    {
-      "place": "qwdfqw",
-      "id": "2df22ae4-950d-46b2-a201-3fa30237a36c",
-      "description": "qffff",
-      "visited": "Yes",
       "rating": [
-        "5",
-        "2",
-        "4"
+        "2"
       ]
     },
     {
-      "place": "qfef",
-      "id": "06107a6d-ab20-43fd-8b55-45e6fbb89de3",
-      "description": "fqe",
+      "place": "jvhhjvac",
+      "id": "c44b0cfb-6827-4615-930d-1cca29ef622c",
+      "description": "cacsasc",
       "visited": "Yes",
       "rating": [
         "5",
         "2",
-        "4"
+        "3"
       ]
     }
   ]

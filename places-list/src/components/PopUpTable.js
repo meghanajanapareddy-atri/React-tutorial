@@ -3,17 +3,22 @@ import "./Popup.css";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { MDBBtn } from "mdb-react-ui-kit";
-import { options, uncheckAll, toggleOption } from "./Checklist";
+import { options } from "./Checklist";
 
 function PopUpTable({ rowdata, onEdit, closePopup }) {
   const { register, handleSubmit, reset } = useForm();
+  const [checkedList, setCheckedList] = useState(rowdata.rating);
 
   const onSubmit = (data) => {
-    const value = handleCheck();
-    onEdit(rowdata.id, data, value);
+    onEdit(rowdata.id, data, checkedList);
     closePopup();
     reset();
   };
+
+  var clist = [false, false, false, false, false];
+  rowdata.rating.forEach((item) => {
+    clist[item] = true;
+  });
 
   const [selected, setSelected] = useState(rowdata.visited);
   const [placeState, setPlace] = useState(rowdata.place);
@@ -31,22 +36,17 @@ function PopUpTable({ rowdata, onEdit, closePopup }) {
     setDescription(event.target.value);
   };
 
-  const [checkedList, setCheckedList] = useState(uncheckAll(options));
+  const handleSelect = (event) => {
+    const value = event.target.value;
+    const isChecked = event.target.checked;
 
-  const changeList = (id, checked) => {
-    setCheckedList((checkedList) => toggleOption(checkedList, id, checked));
+    if (isChecked) {
+      setCheckedList([...checkedList, value]);
+    } else {
+      const filteredList = checkedList.filter((item) => item !== value);
+      setCheckedList(filteredList);
+    }
   };
-
-  function handleCheck() {
-    var rating = rowdata.rating;
-    checkedList.map((item) => {
-      if (item.checked) {
-        rating = item.id;
-      }
-      return item;
-    });
-    return rating;
-  }
 
   return (
     <div className="popup-container">
@@ -109,17 +109,17 @@ function PopUpTable({ rowdata, onEdit, closePopup }) {
           <br></br>
 
           <label htmlFor="rating">Rating </label>
-          {checkedList.map(({ id, name, checked }) => (
+          {options.map(({ id, name }) => (
             <label key={id}>
               {name}
               <input
                 type="checkbox"
-                checked={id === parseInt(rowdata.rating, 10) ? true : checked}
                 id={`checkbox-${id}`}
                 name={id}
-                onChange={(e) => changeList(id, e.target.checked)}
+                value={name}
+                defaultChecked={clist[parseInt(name)]}
+                onChange={handleSelect}
               />
-              {console.log(rowdata.rating, id)}
             </label>
           ))}
 
